@@ -15,15 +15,15 @@ def create_user():
     data = request.json
     conn = get_db_connection()
     cursor = conn.cursor()
-    query = '''INSERT INTO user (name, type, email, website)
-               VALUES (%s, %s, %s, %s)'''
-    cursor.execute(query, (data['name'], data['type'], data['email'], data['website']))
+    query = '''INSERT INTO user (userID, name, type, email, website)
+               VALUES (%s, %s, %s, %s, %s)'''
+    cursor.execute(query, (data['userID'], data['name'], data['type'], data['email'], data['website']))
     conn.commit()
     cursor.close()
     conn.close()
     return jsonify({'message': 'User created'}), 201
 
-@app.route('/users/<int:user_id>', methods=['GET'])
+@app.route('/users/<string:user_id>', methods=['GET'])
 def read_user(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -37,7 +37,7 @@ def read_user(user_id):
     else:
         return jsonify({'message': 'User not found'}), 404
 
-@app.route('/users/<int:user_id>', methods=['PUT'])
+@app.route('/users/<string:user_id>', methods=['PUT'])
 def update_user(user_id):
     data = request.json
     conn = get_db_connection()
@@ -49,7 +49,7 @@ def update_user(user_id):
     conn.close()
     return jsonify({'message': 'User updated'}), 200
 
-@app.route('/users/<int:user_id>', methods=['DELETE'])
+@app.route('/users/<string:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
